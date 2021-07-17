@@ -13,7 +13,11 @@ type
   TFileHelper = class
   private const
     _PATH = 'c:\';
+{$IFDEF DEBUG}
+    _FILENAME = 'debug.lst';
+{$ELSE}
     _FILENAME = 'data.lst';
+{$ENDIF}
     _FORMAT = '%0:s;%1:s;%2:s;%3:s;%4:s';
 
   public
