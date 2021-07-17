@@ -73,6 +73,7 @@ type
     procedure ToggleControls;
     procedure LoadEditsFromAccount;
     procedure UpdateList;
+    procedure ClearEdits;
   end;
 
 var
@@ -247,6 +248,9 @@ procedure TfrmPwMng.btnCancelClick(Sender: TObject);
 begin
   FEditMode := dmBrowse;
   ToggleControls;
+  chkShowPassword.Enabled := true;
+  chkShowPassword.Checked := False;
+  edPassword.Text := FCurrentAccount.Password.getPassword(False);
   LoadEditsFromAccount;
 end;
 
@@ -272,6 +276,9 @@ procedure TfrmPwMng.btnEditClick(Sender: TObject);
 begin
   FEditMode := dmEdit;
   ToggleControls;
+  edPassword.Text := FCurrentAccount.Password.getPassword(true);
+  chkShowPassword.Checked := true;
+  chkShowPassword.Enabled := False;
 end;
 
 procedure TfrmPwMng.btnGeneratePasswordClick(Sender: TObject);
@@ -290,6 +297,7 @@ procedure TfrmPwMng.btnNewClick(Sender: TObject);
 begin
   FEditMode := dmInsert;
   ToggleControls;
+  ClearEdits;
 end;
 
 procedure TfrmPwMng.btnSaveClick(Sender: TObject);
@@ -300,8 +308,12 @@ begin
     AlterAccount
   else
     System.SysUtils.Abort;
+
   lstAccounts.ItemIndex := FAccounts.IndexOf(FCurrentAccount);
   FEditMode := dmBrowse;
+  chkShowPassword.Enabled := true;
+  chkShowPassword.Checked := False;
+  edPassword.Text := FCurrentAccount.Password.getPassword(False);
   ToggleControls;
 end;
 
@@ -311,6 +323,15 @@ begin
   begin
     edPassword.Text := FCurrentAccount.getPassword(chkShowPassword.Checked);
   end;
+end;
+
+procedure TfrmPwMng.ClearEdits;
+begin
+  edProviderName.Text := string.empty;
+  edURL.Text := string.empty;
+  edMail.Text := string.empty;
+  edUsername.Text := string.empty;
+  edPassword.Text := string.empty;
 end;
 
 procedure TfrmPwMng.DeleteAccount;
