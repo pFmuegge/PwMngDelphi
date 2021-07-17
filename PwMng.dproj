@@ -108,9 +108,9 @@
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1031</VerInfo_Locale>
-        <VerInfo_Build>7</VerInfo_Build>
+        <VerInfo_Build>10</VerInfo_Build>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.7;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.10;InternalName=;LegalCopyright=Christopher Puls;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <Icon_MainIcon>Assets\baseline_vpn_key_black_18dp_EDy_icon.ico</Icon_MainIcon>
         <PostBuildEvent><![CDATA[copy $(OUTPUTPATH) $(PROJECTDIR)\Exe\$(OUTPUTFILENAME)
 $(PostBuildEvent)]]></PostBuildEvent>
