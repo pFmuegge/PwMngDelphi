@@ -4,9 +4,9 @@ interface
 
 type
   TPasswordSettings = record
-    Length: Integer = 16;
-    IncludeSymbols: Boolean = false;
-    class function GetWithDefault: TPasswordSettings;
+    Length: Integer;
+    IncludeSymbols: Boolean;
+    class function GetWithDefault: TPasswordSettings; static;
   end;
 
 implementation
