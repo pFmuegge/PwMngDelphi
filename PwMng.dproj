@@ -126,6 +126,7 @@
         <DCCReference Include="Klassen\Provider.pas"/>
         <DCCReference Include="Klassen\DataMode.pas"/>
         <DCCReference Include="Klassen\FileHelper.pas"/>
+        <DCCReference Include="Klassen\PasswordSettings.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

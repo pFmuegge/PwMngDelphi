@@ -79,7 +79,7 @@ begin
     output := output + chars[Random(chars.length) + 1];
   end;
 
-  FPassword := output;
+  FPassword := encrypt(output);
 end;
 
 function TPassword.getPassword(ARevealed: boolean): string;

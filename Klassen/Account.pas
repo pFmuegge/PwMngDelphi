@@ -3,7 +3,9 @@ unit Account;
 interface
 
 uses
-  System.SysUtils, Password, Provider;
+  System.SysUtils,
+  Password,
+  Provider;
 
 type
   TAccount = class
@@ -23,8 +25,10 @@ type
     function getPassword(ARevealed: boolean): string;
     procedure setPassword(ANewPassword: string);
 
-    constructor create(AUsername, AMail, APassword, AProviderName, AProviderLink: string);
-    constructor createFromLoad(AUsername, AMail, APassword, AProviderName, AProviderlink: string);
+    constructor create(AUsername, AMail, APassword, AProviderName,
+      AProviderLink: string);
+    constructor createFromLoad(AUsername, AMail, APassword, AProviderName,
+      AProviderLink: string);
 
     destructor Destroy; override;
   end;
@@ -42,7 +46,8 @@ begin
   FPassword := TPassword.create(APassword);
 end;
 
-constructor TAccount.createFromLoad(AUsername, AMail, APassword, AProviderName, AProviderlink: string);
+constructor TAccount.createFromLoad(AUsername, AMail, APassword, AProviderName,
+  AProviderLink: string);
 begin
   FUsername := AUsername;
   FMail := AMail;
@@ -69,11 +74,11 @@ end;
 
 function TAccount.toString: string;
 begin
-  Result := FProvider.Name;
-  Result := Result + ';' + FProvider.Link;
-  Result := Result + ';' + FUsername;
-  Result := Result + ';' + FMail;
-  Result := Result + ';' + FPassword.Password;
+  result := FProvider.Name;
+  result := result + ';' + FProvider.Link;
+  result := result + ';' + FUsername;
+  result := result + ';' + FMail;
+  result := result + ';' + FPassword.Password;
 end;
 
 end.

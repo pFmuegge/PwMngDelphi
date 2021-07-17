@@ -35,7 +35,6 @@ object frmPwMng: TfrmPwMng
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitLeft = 265
     object Panel1: TPanel
       Left = 0
       Top = 0
@@ -166,6 +165,7 @@ object frmPwMng: TfrmPwMng
       Caption = 'Generieren'
       Enabled = False
       TabOrder = 7
+      OnClick = btnGeneratePasswordClick
     end
     object btnCopyPassword: TButton
       Left = 192

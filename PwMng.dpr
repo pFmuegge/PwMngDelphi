@@ -9,7 +9,8 @@ uses
   DataMode in 'Klassen\DataMode.pas',
   Vcl.Themes,
   Vcl.Styles,
-  FileHelper in 'Klassen\FileHelper.pas';
+  FileHelper in 'Klassen\FileHelper.pas',
+  PasswordSettings in 'Klassen\PasswordSettings.pas';
 
 {$R *.res}
 

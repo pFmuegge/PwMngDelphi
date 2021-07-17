@@ -21,7 +21,9 @@ uses
   DataMode,
   FileHelper,
   Winapi.ShellAPI,
-  System.IOUtils, Vcl.Clipbrd;
+  System.IOUtils,
+  Vcl.Clipbrd,
+  PasswordSettings;
 
 type
   TfrmPwMng = class(TForm)
@@ -59,6 +61,7 @@ type
     procedure PfadzurSicherungffnen1Click(Sender: TObject);
     procedure chkShowPasswordClick(Sender: TObject);
     procedure btnCopyPasswordClick(Sender: TObject);
+    procedure btnGeneratePasswordClick(Sender: TObject);
   private
     FEditMode: TDataMode;
     FListWasEdited: Boolean;
@@ -249,8 +252,8 @@ end;
 
 procedure TfrmPwMng.btnCopyPasswordClick(Sender: TObject);
 begin
-  if FAccounts.Count > 0 then  
-  Clipboard.AsText := FCurrentAccount.getPassword(true);
+  if FAccounts.Count > 0 then
+    Clipboard.AsText := FCurrentAccount.getPassword(true);
 end;
 
 procedure TfrmPwMng.btnDeleteClick(Sender: TObject);
@@ -269,6 +272,18 @@ procedure TfrmPwMng.btnEditClick(Sender: TObject);
 begin
   FEditMode := dmEdit;
   ToggleControls;
+end;
+
+procedure TfrmPwMng.btnGeneratePasswordClick(Sender: TObject);
+var
+  rps: TPasswordSettings;
+begin
+  rps := TPasswordSettings.getWithDefault;
+  if FEditMode in _EditModes then
+  begin
+    FCurrentAccount.Password.generateNewPassword(rps.Length,
+      rps.IncludeSymbols);
+  end;
 end;
 
 procedure TfrmPwMng.btnNewClick(Sender: TObject);

@@ -25,7 +25,6 @@ implementation
 
 { TFileHelper }
 
-
 class procedure TFileHelper.ReadAccounts(var AAccountList
   : TObjectList<TAccount>);
 var
@@ -49,8 +48,8 @@ begin
       for line in lines do
       begin
         linesplit := line.split([';']);
-        newAccount := TAccount.CreateFromLoad(linesplit[2], linesplit[3], linesplit[4],
-          linesplit[0], linesplit[1]);
+        newAccount := TAccount.CreateFromLoad(linesplit[2], linesplit[3],
+          linesplit[4], linesplit[0], linesplit[1]);
         AAccountList.Add(newAccount);
       end;
     finally
