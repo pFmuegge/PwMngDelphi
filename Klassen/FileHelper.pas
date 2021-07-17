@@ -12,7 +12,6 @@ uses
 type
   TFileHelper = class
   private const
-    _PATH = 'c:\';
 {$IFDEF DEBUG}
     _FILENAME = 'debug.lst';
 {$ELSE}
@@ -21,6 +20,7 @@ type
     _FORMAT = '%0:s;%1:s;%2:s;%3:s;%4:s';
 
   public
+    class function GetPath: string;
     class procedure ReadAccounts(var AAccountList: TObjectList<TAccount>);
     class procedure WriteAccounts(var AAccountList: TObjectList<TAccount>);
   end;
@@ -28,6 +28,11 @@ type
 implementation
 
 { TFileHelper }
+
+class function TFileHelper.GetPath: string;
+begin
+  result := TPath.GetHomePath + '\PwMng\';
+end;
 
 class procedure TFileHelper.ReadAccounts(var AAccountList
   : TObjectList<TAccount>);
@@ -38,7 +43,7 @@ var
   newAccount: TAccount;
   path: string;
 begin
-  path := TPath.GetHomePath + '\PwMng\';
+  path := GetPath;
   if not FileExists(path + _FILENAME) then
   begin
     Exit;
@@ -74,7 +79,7 @@ var
   lines: TStringList;
   path: string;
 begin
-  path := TPath.GetHomePath + '\PwMng\';
+  path := GetPath;
   lines := TStringList.Create;
   try
     for Account in AAccountList do
@@ -84,9 +89,6 @@ begin
 
     if not DirectoryExists(path) then
       ForceDirectories(path);
-
-    // if not FileExists(path + _FILENAME) then
-    // FileCreate(path + _FILENAME);
 
     lines.SaveToFile(path + _FILENAME);
   finally

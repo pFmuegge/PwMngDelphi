@@ -102,8 +102,8 @@ end;
 
 procedure TfrmPwMng.PfadzurSicherungffnen1Click(Sender: TObject);
 begin
-  ShellExecute(Application.Handle, 'open', 'explorer.exe',
-    PChar(TPath.GetHomePath + '\PwMng\'), nil, SW_NORMAL);
+  ShellExecute(Application.Handle, 'open', 'explorer.exe', PChar(TFileHelper.GetPath), nil,
+    SW_NORMAL);
 end;
 
 procedure TfrmPwMng.ToggleControls;
