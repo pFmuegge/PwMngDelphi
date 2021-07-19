@@ -7,7 +7,8 @@ uses
   Account,
   System.Classes,
   System.SysUtils,
-  System.IOUtils;
+  System.IOUtils,
+  System.IniFiles;
 
 type
   TFileHelper = class
@@ -17,8 +18,6 @@ type
 {$ELSE}
     _FILENAME = 'data.lst';
 {$ENDIF}
-    _FORMAT = '%0:s;%1:s;%2:s;%3:s;%4:s';
-
   public
     class function GetPath: string;
     class procedure ReadAccounts(var AAccountList: TObjectList<TAccount>);

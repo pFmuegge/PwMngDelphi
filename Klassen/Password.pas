@@ -4,7 +4,8 @@ interface
 
 uses
   System.SysUtils,
-  LbClass;
+  LbClass,
+  PasswordSettings;
 
 type
   TPassword = class(TObject)
@@ -19,7 +20,7 @@ type
     function getPassword(ARevealed: boolean): string;
     constructor create(APassword: string; AIsEncrypted: boolean = false);
     destructor Destroy; override;
-    procedure generateNewPassword(ALength: Integer; AWithSymbols: boolean);
+    procedure generateNewPassword(APasswordSettings: TPasswordSettings);
   end;
 
 implementation
@@ -56,8 +57,7 @@ begin
   Result := FCrypt.EncryptString(APassword);
 end;
 
-procedure TPassword.generateNewPassword(ALength: Integer;
-  AWithSymbols: boolean);
+procedure TPassword.generateNewPassword(APasswordSettings: TPasswordSettings);
 const
   _CHARS_BIG = 'ABCDEFGHJIKLMNOPQRSTUVWXYZ';
   _CHARS_LIL = 'abcdefghijklmnopqrstuvwxyz';
@@ -71,10 +71,10 @@ begin
   output := string.empty;
 
   chars := _CHARS_BIG + _CHARS_LIL + _CHARS_NUM;
-  if AWithSymbols then
+  if APasswordSettings.IncludeSymbols then
     chars := chars + _CHARS_SYM;
 
-  while output.length < ALength do
+  while output.length < APasswordSettings.length do
   begin
     output := output + chars[Random(chars.length) + 1];
   end;

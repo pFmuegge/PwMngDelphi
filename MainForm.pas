@@ -23,11 +23,12 @@ uses
   Winapi.ShellAPI,
   System.IOUtils,
   Vcl.Clipbrd,
-  PasswordSettings;
+  PasswordSettings,
+  SettingsForm;
 
 type
   TfrmPwMng = class(TForm)
-    MainMenu1: TMainMenu;
+    mmMain: TMainMenu;
     File1: TMenuItem;
     Exit1: TMenuItem;
     N2: TMenuItem;
@@ -48,6 +49,8 @@ type
     btnGeneratePassword: TButton;
     PfadzurSicherungffnen1: TMenuItem;
     btnCopyPassword: TButton;
+    bhHint: TBalloonHint;
+    Einstellungen1: TMenuItem;
     procedure Exit1Click(Sender: TObject);
     procedure btnNewClick(Sender: TObject);
     procedure btnEditClick(Sender: TObject);
@@ -62,6 +65,7 @@ type
     procedure chkShowPasswordClick(Sender: TObject);
     procedure btnCopyPasswordClick(Sender: TObject);
     procedure btnGeneratePasswordClick(Sender: TObject);
+    procedure Einstellungen1Click(Sender: TObject);
   private
     FEditMode: TDataMode;
     FListWasEdited: Boolean;
@@ -82,6 +86,11 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TfrmPwMng.Einstellungen1Click(Sender: TObject);
+begin
+  TfrmSettings.Run;
+end;
 
 procedure TfrmPwMng.Exit1Click(Sender: TObject);
 begin
@@ -285,11 +294,10 @@ procedure TfrmPwMng.btnGeneratePasswordClick(Sender: TObject);
 var
   rps: TPasswordSettings;
 begin
-  rps := TPasswordSettings.getWithDefault;
+  rps := Settings.Password;
   if FEditMode in _EditModes then
   begin
-    FCurrentAccount.Password.generateNewPassword(rps.Length,
-      rps.IncludeSymbols);
+    FCurrentAccount.Password.generateNewPassword(rps);
   end;
 end;
 

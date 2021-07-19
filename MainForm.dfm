@@ -10,7 +10,7 @@ object frmPwMng: TfrmPwMng
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  Menu = MainMenu1
+  Menu = mmMain
   OldCreateOrder = False
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
@@ -50,7 +50,7 @@ object frmPwMng: TfrmPwMng
         Height = 25
         Caption = 'Verwerfen'
         Enabled = False
-        TabOrder = 0
+        TabOrder = 1
         OnClick = btnCancelClick
       end
       object btnDelete: TButton
@@ -60,7 +60,7 @@ object frmPwMng: TfrmPwMng
         Height = 25
         Caption = 'L'#246'schen'
         Enabled = False
-        TabOrder = 1
+        TabOrder = 2
         OnClick = btnDeleteClick
       end
       object btnEdit: TButton
@@ -70,7 +70,7 @@ object frmPwMng: TfrmPwMng
         Height = 25
         Caption = #196'ndern'
         Enabled = False
-        TabOrder = 2
+        TabOrder = 3
         OnClick = btnEditClick
       end
       object btnNew: TButton
@@ -79,7 +79,7 @@ object frmPwMng: TfrmPwMng
         Width = 75
         Height = 25
         Caption = 'Neu'
-        TabOrder = 3
+        TabOrder = 0
         OnClick = btnNewClick
       end
       object btnSave: TButton
@@ -177,7 +177,7 @@ object frmPwMng: TfrmPwMng
       OnClick = btnCopyPasswordClick
     end
   end
-  object MainMenu1: TMainMenu
+  object mmMain: TMainMenu
     Left = 200
     Top = 8
     object File1: TMenuItem
@@ -194,5 +194,14 @@ object frmPwMng: TfrmPwMng
         OnClick = Exit1Click
       end
     end
+    object Einstellungen1: TMenuItem
+      Caption = 'Einstellungen'
+      OnClick = Einstellungen1Click
+    end
+  end
+  object bhHint: TBalloonHint
+    HideAfter = 5
+    Left = 56
+    Top = 208
   end
 end
