@@ -4,8 +4,8 @@ object frmSettings: TfrmSettings
   BorderIcons = []
   BorderStyle = bsSingle
   Caption = 'Einstellungen'
-  ClientHeight = 309
-  ClientWidth = 288
+  ClientHeight = 234
+  ClientWidth = 279
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,6 +13,7 @@ object frmSettings: TfrmSettings
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poMainFormCenter
   OnClose = FormClose
   OnCreate = FormCreate
   PixelsPerInch = 96
@@ -46,8 +47,12 @@ object frmSettings: TfrmSettings
     Top = 16
     Width = 145
     Height = 21
+    AutoComplete = False
+    Style = csDropDownList
+    ItemIndex = 0
     TabOrder = 0
     Text = 'Carbon'
+    TextHint = 'Theme'
     Items.Strings = (
       'Carbon'
       'Sky'
@@ -65,7 +70,7 @@ object frmSettings: TfrmSettings
   end
   object btnOk: TButton
     Left = 182
-    Top = 266
+    Top = 186
     Width = 75
     Height = 25
     Caption = 'Ok'
@@ -75,7 +80,7 @@ object frmSettings: TfrmSettings
   object chkSym: TCheckBox
     Left = 112
     Top = 70
-    Width = 97
+    Width = 17
     Height = 17
     TabOrder = 2
   end
@@ -86,6 +91,6 @@ object frmSettings: TfrmSettings
     Height = 21
     NumbersOnly = True
     TabOrder = 3
-    Text = 'edtLength'
+    TextHint = 'Length'
   end
 end

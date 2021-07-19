@@ -24,7 +24,9 @@ uses
   System.IOUtils,
   Vcl.Clipbrd,
   PasswordSettings,
-  SettingsForm;
+  SettingsForm,
+  Vcl.ComCtrls,
+  Vcl.ToolWin;
 
 type
   TfrmPwMng = class(TForm)
@@ -33,12 +35,6 @@ type
     Exit1: TMenuItem;
     N2: TMenuItem;
     lstAccounts: TListBox;
-    btnNew: TButton;
-    btnEdit: TButton;
-    btnCancel: TButton;
-    btnSave: TButton;
-    btnDelete: TButton;
-    Panel1: TPanel;
     Panel2: TPanel;
     edProviderName: TLabeledEdit;
     edURL: TLabeledEdit;
@@ -49,8 +45,17 @@ type
     btnGeneratePassword: TButton;
     PfadzurSicherungffnen1: TMenuItem;
     btnCopyPassword: TButton;
-    bhHint: TBalloonHint;
     Einstellungen1: TMenuItem;
+    tray: TTrayIcon;
+    pmTray: TPopupMenu;
+    Showme1: TMenuItem;
+    Beenden1: TMenuItem;
+    tlb1: TToolBar;
+    btnNew: TToolButton;
+    btnEdit: TToolButton;
+    btnSave: TToolButton;
+    btnCancel: TToolButton;
+    btnDelete: TToolButton;
     procedure Exit1Click(Sender: TObject);
     procedure btnNewClick(Sender: TObject);
     procedure btnEditClick(Sender: TObject);
@@ -66,12 +71,18 @@ type
     procedure btnCopyPasswordClick(Sender: TObject);
     procedure btnGeneratePasswordClick(Sender: TObject);
     procedure Einstellungen1Click(Sender: TObject);
+    procedure FormResize(Sender: TObject);
+    procedure trayDblClick(Sender: TObject);
+    procedure Showme1Click(Sender: TObject);
+    procedure Beenden1Click(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
+    FWillGeneratePassword: Boolean;
+    FPrevWindowState: TWindowState;
     FEditMode: TDataMode;
     FListWasEdited: Boolean;
     FAccounts: TObjectList<TAccount>;
     FCurrentAccount: TAccount;
-    procedure NewAccount;
     procedure AlterAccount;
     procedure DeleteAccount;
     procedure ToggleControls;
@@ -97,22 +108,16 @@ begin
   Close;
 end;
 
-procedure TfrmPwMng.NewAccount;
-var
-  lAccount: TAccount;
-begin
-  lAccount := TAccount.Create(edUsername.Text, edMail.Text, edPassword.Text,
-    edProviderName.Text, edURL.Text);
-  FCurrentAccount := lAccount;
-  FAccounts.Add(lAccount);
-  lstAccounts.Items.Add(lAccount.Provider.Name);
-  FListWasEdited := true;
-end;
-
 procedure TfrmPwMng.PfadzurSicherungffnen1Click(Sender: TObject);
 begin
-  ShellExecute(Application.Handle, 'open', 'explorer.exe', PChar(TFileHelper.GetPath), nil,
-    SW_NORMAL);
+  ShellExecute(Application.Handle, 'open', 'explorer.exe',
+    PChar(TFileHelper.GetPath), nil, SW_NORMAL);
+end;
+
+procedure TfrmPwMng.Showme1Click(Sender: TObject);
+begin
+  show;
+  WindowState := wsNormal;
 end;
 
 procedure TfrmPwMng.ToggleControls;
@@ -136,6 +141,11 @@ begin
   edURL.Enabled := lIsEditMode;
   edPassword.Enabled := lIsEditMode;
   lstAccounts.Enabled := not lIsEditMode;
+end;
+
+procedure TfrmPwMng.trayDblClick(Sender: TObject);
+begin
+  Showme1.Click;
 end;
 
 procedure TfrmPwMng.UpdateList;
@@ -193,6 +203,8 @@ end;
 
 procedure TfrmPwMng.FormCreate(Sender: TObject);
 begin
+  FWillGeneratePassword := False;
+
   FAccounts := TObjectList<TAccount>.Create(true);
   FEditMode := dmBrowse;
 
@@ -203,6 +215,61 @@ end;
 procedure TfrmPwMng.FormDestroy(Sender: TObject);
 begin
   FreeAndNil(FAccounts);
+end;
+
+procedure TfrmPwMng.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (Shift = [ssCtrl]) and (Key = vkAdd) then // New
+  begin
+    if btnNew.Enabled then
+      btnNew.Click;
+  end
+  else if (Key = vkF2) then // Edit
+  begin
+    if btnEdit.Enabled then
+      btnEdit.Click;
+  end
+  else if (Shift = [ssCtrl]) and (Key = vkS) then // save
+  begin
+    if btnSave.Enabled then
+      btnSave.Click;
+  end
+  else if (Shift = [ssCtrl]) and (Key = vkZ) then // Cancel
+  begin
+    if btnCancel.Enabled then
+      btnCancel.Click;
+  end
+  else if (Shift = [ssCtrl]) and (Key = vkDelete) then // Delete
+  begin
+    if btnDelete.Enabled then
+      btnDelete.Click
+  end;
+end;
+
+procedure TfrmPwMng.FormResize(Sender: TObject);
+var
+  StateChange: Boolean;
+begin
+
+  // did the WindowState actually change?
+  StateChange := FPrevWindowState <> WindowState;
+  if StateChange and (WindowState = wsMinimized) then
+  begin
+    hide;
+    tray.Visible := true;
+  end
+  else if StateChange and (WindowState in [wsNormal, wsMaximized]) then
+  begin
+    show;
+    tray.Visible := False;
+  end;
+
+  if tray.Visible then
+    tray.ShowBalloonHint;
+
+  // Set the new WindowsState so it can be used in the next call of this event
+  FPrevWindowState := WindowState;
 end;
 
 procedure TfrmPwMng.LoadEditsFromAccount;
@@ -253,8 +320,19 @@ begin
   FListWasEdited := true;
 end;
 
+procedure TfrmPwMng.Beenden1Click(Sender: TObject);
+begin
+  Close;
+end;
+
 procedure TfrmPwMng.btnCancelClick(Sender: TObject);
 begin
+  if FEditMode = dmInsert then
+  begin
+    FCurrentAccount := FAccounts[FAccounts.Count - 1];
+    lstAccounts.ItemIndex := FAccounts.Count - 1;
+  end;
+
   FEditMode := dmBrowse;
   ToggleControls;
   chkShowPassword.Enabled := true;
@@ -298,26 +376,46 @@ begin
   if FEditMode in _EditModes then
   begin
     FCurrentAccount.Password.generateNewPassword(rps);
+    edPassword.Text := FCurrentAccount.getPassword(true);
   end;
+
 end;
 
 procedure TfrmPwMng.btnNewClick(Sender: TObject);
 begin
+  // init
   FEditMode := dmInsert;
   ToggleControls;
   ClearEdits;
+
+  // create a new account as the current account
+  FCurrentAccount := TAccount.Create('', '', '', '', '');
+
+  lstAccounts.Items.Add(FCurrentAccount.Provider.Name);
+  FListWasEdited := true;
 end;
 
 procedure TfrmPwMng.btnSaveClick(Sender: TObject);
 begin
-  if FEditMode = dmInsert then
-    NewAccount
-  else if FEditMode = dmEdit then
-    AlterAccount
-  else
-    System.SysUtils.Abort;
+  AlterAccount;
 
+  if FEditMode = dmInsert then
+  begin
+    // add the account to the list
+    FAccounts.Add(FCurrentAccount);
+    // update the listbox
+    UpdateList;
+
+    // CurrentAccount changes while updating the list because of the selected index
+    FCurrentAccount := FAccounts.Last;
+
+    // fill the edits with the data (updatelist overwrites it)
+    LoadEditsFromAccount;
+  end;
+
+  // select the current account in the listbox
   lstAccounts.ItemIndex := FAccounts.IndexOf(FCurrentAccount);
+
   FEditMode := dmBrowse;
   chkShowPassword.Enabled := true;
   chkShowPassword.Checked := False;

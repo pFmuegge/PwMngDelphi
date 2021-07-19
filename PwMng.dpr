@@ -2,13 +2,13 @@ program PwMng;
 
 uses
   Vcl.Forms,
+  Vcl.Themes,
+  Vcl.Styles,
   MainForm in 'MainForm.pas' {frmPwMng} ,
   Account in 'Klassen\Account.pas',
   Password in 'Klassen\Password.pas',
   Provider in 'Klassen\Provider.pas',
   DataMode in 'Klassen\DataMode.pas',
-  Vcl.Themes,
-  Vcl.Styles,
   FileHelper in 'Klassen\FileHelper.pas',
   PasswordSettings in 'Klassen\PasswordSettings.pas',
   Settings.Classes in 'Klassen\Settings.Classes.pas',
